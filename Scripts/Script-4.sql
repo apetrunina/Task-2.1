@@ -23,15 +23,13 @@ CREATE TABLE Readers (
 
 CREATE TABLE Books (
   Book_id SERIAL PRIMARY KEY,
-  Сipher INT,
+  Cipher INT,
   Book_name VARCHAR(100),
   Publication_year INT,
   Page_volume INT,
   Price DECIMAL(10,2),
   Copies_quantity INT,
-  card_number INT,
   Publisher_id INT,
-  CONSTRAINT fk_card_number FOREIGN KEY (card_number) REFERENCES Readers(card_number),
   CONSTRAINT fk_publisher_id FOREIGN KEY (Publisher_id) REFERENCES Publishers(Publisher_id)
 );
 
@@ -42,5 +40,15 @@ CREATE TABLE Books_Authors (
   CONSTRAINT fk_author_id FOREIGN KEY (Author_id) REFERENCES Authors(Author_id)
 );
 
+CREATE TABLE Loans (
+  Loan_id SERIAL PRIMARY KEY,
+  Book_id INT,
+  Reader_card_number INT,
+  Loan_date DATE,
+  Return_date DATE,
+  CONSTRAINT fk_loan_book_id FOREIGN KEY (Book_id) REFERENCES Books(Book_id),
+  CONSTRAINT fk_loan_reader_card_number FOREIGN KEY (Reader_card_number) REFERENCES Readers(card_number)
+);
+
 ALTER TABLE Publishers ADD CONSTRAINT unique_publisher_name_city UNIQUE (Publisher_name, City);
-ALTER TABLE Books ADD CONSTRAINT unique_book_cipher UNIQUE (Сipher);
+ALTER TABLE Books ADD CONSTRAINT unique_book_cipher UNIQUE (Cipher);
